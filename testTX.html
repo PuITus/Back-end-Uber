@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>WebSocket</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<ul id="list"></ul>
+	<script id="template" type="text/x-handlebars-template">
+		{{#each this}}
+			<li>{{name}}</li>
+		{{/each}}
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+	<script type="text/javascript">
+		var ws;
+		function sendRequest() 
+			{
+				var a = setInterval(function(){
+			  
+			    if(ws.readyState == 1)
+			    {
+					console.log("Ready for user!");
+					var msg = {
+					type: 'accept',
+					payload: { Latitude:'40', Longitude: '80',ID: '1' }
+					};
+					ws.send(JSON.stringify(msg));
+					// var msg = {
+					// type: 'done',
+					// payload: { Latitude:'40', Longitude: '80',ID: '1' }
+					// };
+					// ws.send(JSON.stringify(msg));
+  					clearInterval(a);
+			    }
+			    else
+			    {
+			    	  console.log("loading...");
+			    		    console.log(ws.readyState);
+			    }		  
+				}, 500);
+			}
+	 window.WebSocket = window.WebSocket || window.MozWebSocket;
+           
+			ws = new WebSocket('ws://localhost:3003');
+			ws.onopen = function() {
+				console.log('connected');
+				//Data khi authen
+                var msg = {
+                type: 'authenticate',
+                payload: { Token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7IklEIjozLCJVc2VybmFtZSI6ImFkbWluMyIsIk5hbWUiOiJhZG1pbjMiLCJQYXNzd29yZCI6IjIxMjMyZjI5N2E1N2E1YTc0Mzg5NGEwZTRhODAxZmMzIiwiQWNjb3VudFR5cGVfSUQiOjMsIlN0YXR1cyI6MX0sImluZm8iOiJtb3JlIGluZm8iLCJpYXQiOjE1NDIwOTAwODYsImV4cCI6MTU0MjA5NjA4Nn0.zkL8ZjyID_kQ3WBdMnlQV77qydNtwgz4ovvV_i3I0lY' }
+                };
+				ws.send(JSON.stringify(msg));
+				msg = {
+					type: 'ready',
+					payload: { Latitude:'69', Longitude: '69' }
+					};
+                    ws.send(JSON.stringify(msg));
+				//Data khi push request lên
+			
+			}
+			
+			ws.onmessage = function(e) {
+				console.log(e.data);
+			}
+           
+
+	
+	</script>
+	<button type="button" onclick="sendRequest()" class="btn btn-default">Update attitude </button>
+</body>
+</html>

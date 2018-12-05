@@ -1,0 +1,33 @@
+- ID loại người dùng:
+    1 : Tổng đài viên
+    2 : Dinh vi vien
+    3 : Tai xe
+    4 : Manager
+- status cua mot request:
+    0: moi khoi tao
+    1: dang dinh vi
+    2: da dinh vi
+    3: da duoc accept
+    4: done
+    5: tim khong thay xe
+
+
+
+==========================================
+=======Tổng đài viên======================
+==========================================
+-  authenticate:    var msg = {
+                type: 'authenticate',
+                payload: { Token: 'token nhap vao' }
+                };
+- Gửi request xe lên server:   var msg = {
+                type: 'push',
+                payload: { Request: {Name:"OK",   Phone:"admin3",Adress:"adress",Note:"note"} }
+                };
+- Sau khi gửi lên server gửi về : var msg = {
+                    type: 'success',
+                    payload: { Request: requestEntity}};
+- khi có lỗi server  ngắt kết nối và gửi về:  var msg = {
+                    type: 'error',
+                    payload: { message: "Lỗi abc xyz"}};
+ 
